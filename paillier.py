@@ -17,6 +17,15 @@ def invmod(a, n, maxiter=1000000):
     
     return d
 
+def modexp(a, expo, mod):
+    res = 1
+    while expo > 0:
+        if expo & 1 == 1:
+            res = (res * a) % mod
+        expo = expo >> 1
+        a = (a * a) % mod
+
+    return res
 
 class PaillierPubkey(object):
 
@@ -70,3 +79,9 @@ def decrytp(privkey, ct):
         plain = (Lx * privkey.mu) % privkey.n
 
         return plain
+
+def add(pubkey, a, b):
+    return a * b % pubkey.nsquare
+
+def mul(pubkey, a, i):
+    return modexp(a, i, pubkey.nsquare)
