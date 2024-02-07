@@ -1,9 +1,13 @@
 #!/usr/bin/env python
-
 import paillier
 
 print ("on test")
 
-x = paillier.keygen(1024)
+pub, priv = paillier.keygen(256)
 
-print(x)
+m = 3
+
+ct = paillier.encrypt(pub, m)
+
+print(paillier.decrytp(priv, ct))
+

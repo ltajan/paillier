@@ -1,32 +1,42 @@
 import random
 
 
+def miller_rabin_test(a, b, n):
 
-
-
-
+    A = a = a % n
+    yield A
+    t = 1
+    while t <= b:
+        t <<= 1
+    t >>= 2    
+    while t:
+        A = (A * A) % n
+        if t & b:
+            A = (A * a) % n
+        yield A
+        t >>= 1   
 
 
 def generate_prime(bits):
 
     temp = random.randrange(2 ** (bits-1), 2 ** bits) | 1
-
-    while not test_prime(temp):
+    while not test_prime(temp, bits):
         temp+=2
 
     return temp
     
 
-def test_prime(n):
+def test_prime(n, bits):
 
     for x in first_primes:
         if n%x ==0:
             return False
+    for i in range(2*bits):
+        test = random.randrange(2, n - 1) | 1
+        if 1 not in miller_rabin_test(test, n-1, n):
+            return False
         
     return True
-
-
-
 
 
 
